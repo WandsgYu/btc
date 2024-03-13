@@ -16,7 +16,7 @@
     }
 
     h1 {
-        font-size: 10vw; /* 设置价格数字的字体大小为视窗宽度的10% */
+        font-size: 15vw; /* 设置价格数字的字体大小为视窗宽度的10% */
         text-align: center; /* 居中文本 */
         margin: 0;
         max-width: 100%;
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(apiUrl);
             const data = await response.json();
-            const price = parseFloat(data.price).toFixed(2); // 保留小数点后一位
+            const price = parseFloat(data.price).toFixed(0); // 保留小数点后一位
             
             if (previousPrice !== null) {
                 const priceElement = document.getElementById('price');
