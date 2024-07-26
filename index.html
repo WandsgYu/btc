@@ -1,87 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Price Loading...</title>
-<style>
-    body, html {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Price Loading...</title>
+    <style>
+      body,
+      html {
         margin: 0;
         padding: 0;
         height: 100%;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: #2B3139; /* 设置页面背景色 */
-    }
+        background-color: #2b3139; /* 页面背景色 */
+      }
 
-    h1 {
-    
+      h1,
+      h2 {
         text-align: center; /* 居中文本 */
         margin: 0;
         max-width: 100%;
         white-space: nowrap; /* 防止文本换行 */
-    }
-</style>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const apiUrl = 'https://data-api.binance.vision/api/v3/ticker/price?symbol=BTCUSDT';
-    let previousPrice = null;
+      }
 
-    async function fetchPrice() {
-        try {
+      h1 {
+        font-size: 25vw; /* 设置价格数字的字体大小为视窗宽度的25% */
+      }
+
+      h2 {
+        font-size: 5vw; /* 设置最小值和最大值的字体大小 */
+        color: #cccccc; /* 设置文本颜色 */
+        margin-top: 10px; /* 调整上下间距 */
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const apiUrl =
+          "https://data-api.binance.vision/api/v3/ticker/price?symbol=BTCUSDT";
+        let previousPrice = null;
+        let maxPrice = null;
+        let minPrice = null;
+
+        async function fetchPrice() {
+          try {
             const response = await fetch(apiUrl);
             const data = await response.json();
             const price = parseFloat(data.price).toFixed(0); // 保留小数点后一位
-            
+
             if (previousPrice !== null) {
-                const priceElement = document.getElementById('price');
-                if (price > previousPrice) {
-                    priceElement.style.color = '#F6455B'; // 上涨时的字体颜色
-                } else if (price < previousPrice) {
-                    priceElement.style.color = '#14C381'; // 下跌时的字体颜色
-                }
+              const priceElement = document.getElementById("price");
+              if (price > previousPrice) {
+                priceElement.style.color = "#F6455B"; // 上涨时的字体颜色
+              } else if (price < previousPrice) {
+                priceElement.style.color = "#14C381"; // 下跌时的字体颜色
+              }
             }
+
+            // 更新最大值和最小值
+            if (maxPrice === null || price > maxPrice) {
+              maxPrice = price;
+              document.getElementById(
+                "max-price"
+              ).textContent = `Max: ${maxPrice}`;
+            }
+            if (minPrice === null || price < minPrice) {
+              minPrice = price;
+              document.getElementById(
+                "min-price"
+              ).textContent = `Min: ${minPrice}`;
+            }
+
             previousPrice = price;
 
-            document.getElementById('price').textContent = price;
+            document.getElementById("price").textContent = price;
             document.title = price; // 设置文档的标题为最新价格
-        } catch (error) {
-            console.error('Error fetching price:', error);
-            document.getElementById('price').textContent = 'Error fetching price';
+          } catch (error) {
+            console.error("Error fetching price:", error);
+            document.getElementById("price").textContent =
+              "Error fetching price";
+          }
         }
-    }
 
-    // 初始加载价格
-    fetchPrice();
+        // 初始加载价格
+        fetchPrice();
 
-    // 每0.3秒更新价格
-    setInterval(fetchPrice, 300);
-});
-</script>
-</head>
-<body>
-
-<h1 id="price">Loading...</h1>
-</body>
+        // 每0.3秒更新价格
+        setInterval(fetchPrice, 200);
+      });
+    </script>
+  </head>
+  <body>
+    <h1 id="price">Loading...</h1>
+    <h2 id="max-price">Max: N/A</h2>
+    <h2 id="min-price">Min: N/A</h2>
+  </body>
 </html>
-
-<style>
-    body, html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    h1 {
-        font-size: 25vw; /* 设置价格数字的字体大小为视窗宽度的10% */
-        text-align: center; /* 居中文本 */
-        margin: 0;
-        max-width: 100%;
-        white-space: nowrap; /* 防止文本换行 */
-    }
-</style>
-
