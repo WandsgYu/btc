@@ -62,8 +62,6 @@
         let maxPrice = null;
         let minPrice = null;
 
-        const audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
-
         async function fetchPrice() {
           try {
             const response = await fetch(apiUrl);
@@ -86,7 +84,6 @@
                 "max-price"
               ).textContent = `Max: ${maxPrice}`;
               priceElement.classList.add("flash");
-              audio.play();
             }
             if (minPrice === null || price < minPrice) {
               minPrice = price;
@@ -94,7 +91,6 @@
                 "min-price"
               ).textContent = `Min: ${minPrice}`;
               priceElement.classList.add("flash");
-              audio.play();
             }
 
             setTimeout(() => priceElement.classList.remove("flash"), 500);
@@ -104,15 +100,13 @@
             priceElement.textContent = price;
             document.title = price;
           } catch (error) {
-            console.error("Error fetching price:", error);
-            document.getElementById("price").textContent =
-            price;
+            // Error handling code removed as per request
           }
         }
 
         fetchPrice();
 
-        setInterval(fetchPrice, 200);
+        setInterval(fetchPrice, 500);
       });
     </script>
   </head>
