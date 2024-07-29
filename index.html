@@ -45,7 +45,7 @@
           opacity: 1;
         }
         50% {
-          transform: scale(1.2);
+          transform: scale(1.8);
           opacity: 0.5;
         }
         100% {
@@ -61,6 +61,7 @@
         let previousPrice = null;
         let maxPrice = null;
         let minPrice = null;
+        let isFlashing = false;
 
         async function fetchPrice() {
           try {
@@ -78,25 +79,34 @@
             }
 
             const priceElement = document.getElementById("price");
-            if (maxPrice === null || price > maxPrice) {
-              maxPrice = price;
-              document.getElementById(
-                "max-price"
-              ).textContent = `Max: ${maxPrice}`;
-              priceElement.classList.add("flash");
-            }
-            if (minPrice === null || price < minPrice) {
-              minPrice = price;
-              document.getElementById(
-                "min-price"
-              ).textContent = `Min: ${minPrice}`;
-              priceElement.classList.add("flash");
-            }
+            if (
+              (maxPrice === null || price > maxPrice) ||
+              (minPrice === null || price < minPrice)
+            ) {
+              if (maxPrice === null || price > maxPrice) {
+                maxPrice = price;
+                document.getElementById(
+                  "max-price"
+                ).textContent = `Max: ${maxPrice}`;
+              }
+              if (minPrice === null || price < minPrice) {
+                minPrice = price;
+                document.getElementById(
+                  "min-price"
+                ).textContent = `Min: ${minPrice}`;
+              }
 
-            setTimeout(() => priceElement.classList.remove("flash"), 500);
+              if (!isFlashing) {
+                isFlashing = true;
+                priceElement.classList.add("flash");
+                setTimeout(() => {
+                  priceElement.classList.remove("flash");
+                  isFlashing = false;
+                }, 1000); // 1 second delay
+              }
+            }
 
             previousPrice = price;
-
             priceElement.textContent = price;
             document.title = price;
           } catch (error) {
@@ -105,8 +115,7 @@
         }
 
         fetchPrice();
-
-        setInterval(fetchPrice, 500);
+        setInterval(fetchPrice, 300);
       });
     </script>
   </head>
