@@ -33,6 +33,7 @@
         font-size: 5vw;
         color: #cccccc;
         margin-top: 10px;
+        cursor: pointer; /* Add cursor pointer to indicate clickability */
       }
 
       .flash {
@@ -106,6 +107,14 @@
               }
             }
 
+            // Check if price exceeds user-set max or min
+            if (maxPrice !== null && price > maxPrice) {
+              flashPrice();
+            }
+            if (minPrice !== null && price < minPrice) {
+              flashPrice();
+            }
+
             previousPrice = price;
             priceElement.textContent = price;
             document.title = price;
@@ -114,8 +123,37 @@
           }
         }
 
+        function flashPrice() {
+          const priceElement = document.getElementById("price");
+          if (!isFlashing) {
+            isFlashing = true;
+            priceElement.classList.add("flash");
+            setTimeout(() => {
+              priceElement.classList.remove("flash");
+              isFlashing = false;
+            }, 1000); // 1 second delay
+          }
+        }
+
         fetchPrice();
         setInterval(fetchPrice, 300);
+
+        // Add event listeners for max and min price elements
+        document.getElementById("max-price").addEventListener("click", () => {
+          const userMax = prompt("Set new maximum price:");
+          if (userMax !== null) {
+            maxPrice = parseFloat(userMax);
+            document.getElementById("max-price").textContent = `Max: ${maxPrice}`;
+          }
+        });
+
+        document.getElementById("min-price").addEventListener("click", () => {
+          const userMin = prompt("Set new minimum price:");
+          if (userMin !== null) {
+            minPrice = parseFloat(userMin);
+            document.getElementById("min-price").textContent = `Min: ${minPrice}`;
+          }
+        });
       });
     </script>
   </head>
