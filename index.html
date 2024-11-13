@@ -108,14 +108,14 @@
             const price = parseFloat(data.price).toFixed(0);
             currentPrice = parseFloat(data.price).toFixed(0);
 
-            if (previousPrice !== null) {
-              const priceElement = document.getElementById("price");
-              if (price > previousPrice) {
-                priceElement.style.color = "#F6455B";
-              } else if (price < previousPrice) {
-                priceElement.style.color = "#14C381";
-              }
-            }
+            if (previousPrice!== null) {
+    const priceElement = document.getElementById("price");
+    if (price > previousPrice) {
+        priceElement.style.color = "#14C381";  // 上涨时设置为绿色
+    } else if (price < previousPrice) {
+        priceElement.style.color = "#F6455B";  // 下跌时设置为红色
+    }
+}
 
             const priceElement = document.getElementById("price");
             if (
