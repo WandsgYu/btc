@@ -105,8 +105,8 @@
           try {
             const response = await fetch(apiUrl);
             const data = await response.json();
-            const price = parseFloat(data.price).toFixed(2);
-            currentPrice = parseFloat(data.price).toFixed(2);
+            const price = parseFloat(data.price).toFixed(0);
+            currentPrice = parseFloat(data.price).toFixed(0);
 
             if (previousPrice!== null) {
     const priceElement = document.getElementById("price");
@@ -174,7 +174,7 @@
           );
           const selectElement = document.getElementById("price-selection");
           selectElement.innerHTML = priceOptions
-            .map((option) => `<option value="${option}">${option.toFixed(2)}</option>`)
+            .map((option) => `<option value="${option}">${option.toFixed(0)}</option>`)
             .join("");
           selectElement.innerHTML += '<option value="custom">Custom</option>';
 
@@ -187,18 +187,18 @@
             if (selectedPrice === "custom") {
               const userInput = prompt("Enter custom price:");
               if (type === "max") {
-                maxPrice = parseFloat(userInput).toFixed(2);
+                maxPrice = parseFloat(userInput).toFixed(0);
                 document.getElementById("max-price").textContent = `Max: ${maxPrice}`;
               } else {
-                minPrice = parseFloat(userInput).toFixed(2);
+                minPrice = parseFloat(userInput).toFixed(0);
                 document.getElementById("min-price").textContent = `Min: ${minPrice}`;
               }
             } else {
               if (type === "max") {
-                maxPrice = parseFloat(selectedPrice).toFixed(2);
+                maxPrice = parseFloat(selectedPrice).toFixed(0);
                 document.getElementById("max-price").textContent = `Max: ${maxPrice}`;
               } else {
-                minPrice = parseFloat(selectedPrice).toFixed(2);
+                minPrice = parseFloat(selectedPrice).toFixed(0);
                 document.getElementById("min-price").textContent = `Min: ${minPrice}`;
               }
             }
