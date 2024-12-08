@@ -108,31 +108,33 @@
             const price = parseFloat(data.price).toFixed(0);
             currentPrice = parseFloat(data.price).toFixed(0);
 
-            if (previousPrice!== null) {
-    const priceElement = document.getElementById("price");
-    if (price > previousPrice) {
-        priceElement.style.color = "#14C381";  // 上涨时设置为绿色
-    } else if (price < previousPrice) {
-        priceElement.style.color = "#F6455B";  // 下跌时设置为红色
-    }
-}
+            if (previousPrice !== null) {
+              const priceElement = document.getElementById("price");
+              if (price > previousPrice) {
+                priceElement.style.color = "#14C381";  // 上涨时设置为绿色
+              } else if (price < previousPrice) {
+                priceElement.style.color = "#F6455B";  // 下跌时设置为红色
+              }
+            }
 
             const priceElement = document.getElementById("price");
+            const numericPrice = parseFloat(price);
+
             if (
-              (maxPrice === null || price > maxPrice) ||
-              (minPrice === null || price < minPrice)
+              (maxPrice === null || numericPrice > maxPrice) ||
+              (minPrice === null || numericPrice < minPrice)
             ) {
-              if (maxPrice === null || price > maxPrice) {
-                maxPrice = price;
+              if (maxPrice === null || numericPrice > maxPrice) {
+                maxPrice = numericPrice;
                 document.getElementById(
                   "max-price"
-                ).textContent = `Max: ${maxPrice}`;
+                ).textContent = `Max: ${maxPrice.toFixed(0)}`;
               }
-              if (minPrice === null || price < minPrice) {
-                minPrice = price;
+              if (minPrice === null || numericPrice < minPrice) {
+                minPrice = numericPrice;
                 document.getElementById(
                   "min-price"
-                ).textContent = `Min: ${minPrice}`;
+                ).textContent = `Min: ${minPrice.toFixed(0)}`;
               }
 
               if (!isFlashing) {
@@ -145,9 +147,9 @@
               }
             }
 
-            previousPrice = price;
-            priceElement.textContent = price;
-            document.title = price;
+            previousPrice = numericPrice;
+            priceElement.textContent = numericPrice.toFixed(0);
+            document.title = numericPrice.toFixed(0);
           } catch (error) {
             // Error handling code removed as per request
           }
@@ -187,19 +189,19 @@
             if (selectedPrice === "custom") {
               const userInput = prompt("Enter custom price:");
               if (type === "max") {
-                maxPrice = parseFloat(userInput).toFixed(0);
-                document.getElementById("max-price").textContent = `Max: ${maxPrice}`;
+                maxPrice = parseFloat(userInput);
+                document.getElementById("max-price").textContent = `Max: ${maxPrice.toFixed(0)}`;
               } else {
-                minPrice = parseFloat(userInput).toFixed(0);
-                document.getElementById("min-price").textContent = `Min: ${minPrice}`;
+                minPrice = parseFloat(userInput);
+                document.getElementById("min-price").textContent = `Min: ${minPrice.toFixed(0)}`;
               }
             } else {
               if (type === "max") {
-                maxPrice = parseFloat(selectedPrice).toFixed(0);
-                document.getElementById("max-price").textContent = `Max: ${maxPrice}`;
+                maxPrice = parseFloat(selectedPrice);
+                document.getElementById("max-price").textContent = `Max: ${maxPrice.toFixed(0)}`;
               } else {
-                minPrice = parseFloat(selectedPrice).toFixed(0);
-                document.getElementById("min-price").textContent = `Min: ${minPrice}`;
+                minPrice = parseFloat(selectedPrice);
+                document.getElementById("min-price").textContent = `Min: ${minPrice.toFixed(0)}`;
               }
             }
             document.getElementById("popup").style.display = "none";
